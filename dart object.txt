@@ -1,0 +1,47 @@
+import 'dart:io';
+
+// Define an interface
+abstract class DataHandler {
+  List<String> loadData(String filename);
+}
+
+// Implementing a class that uses inheritance
+class FileProcessor implements DataHandler {
+  @override
+  List<String> loadData(String filename) {
+    List<String> data = [];
+    File file = File(filename);
+    file.readAsLinesSync().forEach((line) {
+      data.add(line);
+    });
+    return data;
+  }
+}
+
+// A class that overrides an inherited method
+class CustomFileProcessor extends FileProcessor {
+  @override
+  List<String> loadData(String filename) {
+    List<String> data = super.loadData(filename);
+    // Custom processing
+    List<String> processedData = data.map((entry) => entry.toUpperCase()).toList();
+    return processedData;
+  }
+}
+
+// Initializing an instance of a class with data from a file
+void main() {
+  String fileName = 'data.txt';
+  var processor = CustomFileProcessor();
+  var dataFromFile = processor.loadData(fileName);
+  print("Data from file: $dataFromFile");
+
+  // Method demonstrating the use of a loop
+  processDataWithLoop(dataFromFile);
+}
+
+void processDataWithLoop(List<String> data) {
+  for (var entry in data) {
+    print(entry);
+  }
+}
